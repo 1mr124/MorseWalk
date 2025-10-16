@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dylcu8cyylqbj"]
+
+[ext_resource type="Shader" uid="uid://6glp34fnlej3" path="res://BackGround.gdshader" id="1_3pl22"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_41xbd"]
+shader = ExtResource("1_3pl22")
+
+[node name="BackGround" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_41xbd")
+offset_right = 1159.0
+offset_bottom = 650.0
+color = Color(0, 0.043137256, 0.09411765, 1)
