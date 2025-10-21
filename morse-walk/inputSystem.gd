@@ -1,10 +1,11 @@
 extends Node2D
 
 var buffer = ""
+const LETTER_TIMEOUT = 1.0
 var letter_timer := Timer.new()
 
 # --- Morse dictionary ---
-var REVERSE_MORSE = {
+const REVERSE_MORSE = {
 	".-": "A",
 	"-...": "B",
 	"-.-.": "C",
@@ -63,14 +64,19 @@ var REVERSE_MORSE = {
 	".--.-.": "@"
 }
 
+func setup_timer():
+	letter_timer.one_shot = true
+	letter_timer.wait_time = LETTER_TIMEOUT
+	letter_timer.timeout.connect(_on_letter_timeout)
+	add_child(letter_timer)
+
+	
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	print("Starting Morse Logger!")
-	add_child(letter_timer)
-	letter_timer.one_shot = true
-	letter_timer.wait_time = 1.0  # wait 1 second before decoding
-	letter_timer.timeout.connect(_on_letter_timeout)
+	setup_timer()
+
 
 # Input handling
 func _input(event):
@@ -90,11 +96,14 @@ func handle_morse_input(keycode):
 func _on_letter_timeout():
 	decode_buffer()
 
+func decode_symbol(sequence: String) -> String:
+		return REVERSE_MORSE.get(sequence, "")
+
 # Check buffer for mapping words... 
 func decode_buffer():
 	if buffer == "":
 		return
-	var letter = REVERSE_MORSE.get(buffer, "")
+	var letter = decode_symbol(buffer)
 	if letter != "":
 		print("Decoded:", letter)
 	else:
